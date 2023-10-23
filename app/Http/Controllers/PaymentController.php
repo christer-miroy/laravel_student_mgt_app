@@ -26,7 +26,7 @@ class PaymentController extends Controller
     {
         // $enrollments = Enrollment::pluck('enroll_no','id');
         // return view('payments.create', compact('enrollments'));
-        
+
         // Fetch only unpaid enrollments
         $unpaidEnrollments = Enrollment::where('status', 'unpaid')->pluck('enroll_no', 'id');
 
@@ -91,52 +91,52 @@ class PaymentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id): View
-    {
-        $payment = Payment::find($id);
-        $enrollments = Enrollment::pluck('enroll_no','id');
-        return view('payments.edit', compact('enrollments'))->with('payments', $payment);
-    }
+    // public function edit(string $id): View
+    // {
+    //     $payment = Payment::find($id);
+    //     $enrollments = Enrollment::pluck('enroll_no','id');
+    //     return view('payments.edit', compact('enrollments'))->with('payments', $payment);
+    // }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id): RedirectResponse
-    {
-        $request->validate([
-            'payment_date' => 'required|date|after_or_equal:' . date('Y-m-d'),
-            'amount' => 'required|numeric|min:0.01',
-            'enrollment_id' => 'required|exists:enrollments,id',
-        ]);
+    // public function update(Request $request, string $id): RedirectResponse
+    // {
+    //     $request->validate([
+    //         'payment_date' => 'required|date|after_or_equal:' . date('Y-m-d'),
+    //         'amount' => 'required|numeric|min:0.01',
+    //         'enrollment_id' => 'required|exists:enrollments,id',
+    //     ]);
 
-        // Check for duplicate payment excluding the current payment being updated
-        $existingPayment = Payment::where([
-            'payment_date' => $request->input('payment_date'),
-            'amount' => $request->input('amount'),
-            'enrollment_id' => $request->input('enrollment_id'),
-        ])->where('id', '<>', $id)->first();
+    //     // Check for duplicate payment excluding the current payment being updated
+    //     $existingPayment = Payment::where([
+    //         'payment_date' => $request->input('payment_date'),
+    //         'amount' => $request->input('amount'),
+    //         'enrollment_id' => $request->input('enrollment_id'),
+    //     ])->where('id', '<>', $id)->first();
 
-        if ($existingPayment) {
-            return redirect("payments/{$id}/edit")
-                ->withInput($request->input())
-                ->withErrors(['duplicate' => 'Duplicate payment exists.']);
-        }
+    //     if ($existingPayment) {
+    //         return redirect("payments/{$id}/edit")
+    //             ->withInput($request->input())
+    //             ->withErrors(['duplicate' => 'Duplicate payment exists.']);
+    //     }
 
-        // Check if payment amount is within the enrollment amount
-        // $enrollment = Enrollment::find($request->input('enrollment_id'));
+    //     // Check if payment amount is within the enrollment amount
+    //     // $enrollment = Enrollment::find($request->input('enrollment_id'));
 
-        // if ($enrollment && $request->input('amount') > $enrollment->amount) {
-        //     return redirect("payments/{$id}/edit")
-        //         ->withInput($request->input())
-        //         ->withErrors(['amount' => 'Payment amount cannot be greater than the enrollment amount.']);
-        // }
+    //     // if ($enrollment && $request->input('amount') > $enrollment->amount) {
+    //     //     return redirect("payments/{$id}/edit")
+    //     //         ->withInput($request->input())
+    //     //         ->withErrors(['amount' => 'Payment amount cannot be greater than the enrollment amount.']);
+    //     // }
 
-        $payment = Payment::find($id);
-        $input = $request->all();
-        $payment->update($input);
+    //     $payment = Payment::find($id);
+    //     $input = $request->all();
+    //     $payment->update($input);
 
-        return redirect('payments')->with('flash_message', 'Payment Updated!');
-    }
+    //     return redirect('payments')->with('flash_message', 'Payment Updated!');
+    // }
 
     /**
      * Remove the specified resource from storage.

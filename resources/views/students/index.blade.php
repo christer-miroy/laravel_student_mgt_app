@@ -2,7 +2,7 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h2>Student Application</h2>
+        <h2>Student List</h2>
     </div>
     <div class="card-body">
         <a href="{{ url('/students/create') }}" class="btn btn-success btn-sm mt-3" title="Add New Student">
