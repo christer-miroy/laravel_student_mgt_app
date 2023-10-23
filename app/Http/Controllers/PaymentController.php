@@ -24,8 +24,13 @@ class PaymentController extends Controller
      */
     public function create(): View
     {
-        $enrollments = Enrollment::pluck('enroll_no','id');
-        return view('payments.create', compact('enrollments'));
+        // $enrollments = Enrollment::pluck('enroll_no','id');
+        // return view('payments.create', compact('enrollments'));
+        
+        // Fetch only unpaid enrollments
+        $unpaidEnrollments = Enrollment::where('status', 'unpaid')->pluck('enroll_no', 'id');
+
+        return view('payments.create', compact('unpaidEnrollments'));
     }
 
     /**
