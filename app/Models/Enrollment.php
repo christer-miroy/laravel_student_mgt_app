@@ -16,7 +16,8 @@ class Enrollment extends Model
         'batch_id',
         'student_id',
         'join_date',
-        'fee'
+        'fee',
+        'status',
     ];
 
     public function student() {

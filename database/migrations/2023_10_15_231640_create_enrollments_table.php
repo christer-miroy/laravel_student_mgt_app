@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('student_id');
             $table->date('join_date');
             $table->decimal('fee',20,2);
+            $table->string('status')->default('unpaid');
             $table->foreign('batch_id')->references('id')->on('batches')->onDelete('cascade');
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->timestamps();

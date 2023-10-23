@@ -58,14 +58,19 @@ class PaymentController extends Controller
         // Check if payment amount is within the enrollment amount
         $enrollment = Enrollment::find($request->input('enrollment_id'));
 
-        if ($enrollment && $request->input('amount') > $enrollment->amount) {
-            return redirect('payments/create')
-                ->withInput($request->input())
-                ->withErrors(['amount' => 'Payment amount should be equal to enrollment amount.']);
-        }
+        // if ($enrollment && $request->input('amount') > $enrollment->amount) {
+        //     return redirect('payments/create')
+        //         ->withInput($request->input())
+        //         ->withErrors(['amount' => 'Payment amount should be equal to enrollment amount.']);
+        // }
+
+        // Update enrollment status to 'paid'
+        $enrollment = Enrollment::find($request->input('enrollment_id'));
+        $enrollment->update(['status' => 'paid']);
 
         $input = $request->all();
         Payment::create($input);
+        
         return redirect('payments')->with('flash_message', 'Payment Added!');
     }
 
@@ -113,13 +118,13 @@ class PaymentController extends Controller
         }
 
         // Check if payment amount is within the enrollment amount
-        $enrollment = Enrollment::find($request->input('enrollment_id'));
+        // $enrollment = Enrollment::find($request->input('enrollment_id'));
 
-        if ($enrollment && $request->input('amount') > $enrollment->amount) {
-            return redirect("payments/{$id}/edit")
-                ->withInput($request->input())
-                ->withErrors(['amount' => 'Payment amount cannot be greater than the enrollment amount.']);
-        }
+        // if ($enrollment && $request->input('amount') > $enrollment->amount) {
+        //     return redirect("payments/{$id}/edit")
+        //         ->withInput($request->input())
+        //         ->withErrors(['amount' => 'Payment amount cannot be greater than the enrollment amount.']);
+        // }
 
         $payment = Payment::find($id);
         $input = $request->all();

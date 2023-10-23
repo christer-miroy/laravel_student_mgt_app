@@ -3,6 +3,7 @@
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StudentController;
@@ -33,3 +34,6 @@ Route::resource("/payments", PaymentController::class);
 
 // print receipt
 Route::get('report/report1/{pid}', [ReportController::class, 'report1']);
+
+// home view
+Route::get("/home", [HomeController::class, 'index']);

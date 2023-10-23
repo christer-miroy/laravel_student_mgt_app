@@ -82,7 +82,7 @@ class TeacherController extends Controller
         $teacher = Teacher::findOrFail($id);
 
         $teacher->name = $request->input('name');
-        $teacher->email = $request->input('address');
+        $teacher->address = $request->input('address');
         $teacher->mobile = $request->input('mobile');
         $teacher->email = $request->input('email');
         $teacher->save();

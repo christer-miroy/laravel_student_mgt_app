@@ -11,6 +11,7 @@
             <p class="card-text mt-2">Student ID : {{ $enrollments->student_id }}</p>
             <p class="card-text mt-2">Join Date : {{ $enrollments->join_date }}</p>
             <p class="card-text mt-2">Fee : {{ $enrollments->fee }}</p>
+            <p class="card-text mt-2">Status : <b class="{{ $enrollments->status == 'unpaid' ? 'text-danger' : 'text-success' }} text-uppercase">{{ $enrollments->status }}</b></p>
         </div>
     </div>
 </div>

@@ -15,10 +15,23 @@ class EnrollmentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $enrollments = Enrollment::all();
-        return view('enrollments.index')->with('enrollments', $enrollments);
+        // $enrollments = Enrollment::all();
+        // return view('enrollments.index')->with('enrollments', $enrollments);
+
+        // Get the selected status from the request, default to 'all'
+        $status = $request->input('status', 'all');
+
+        // Fetch enrollments based on the selected status
+        $enrollments = ($status == 'all')
+            ? Enrollment::all()
+            : Enrollment::where('status', $status)->get();
+
+        return view('enrollments.index')->with([
+            'enrollments' => $enrollments,
+            'selectedStatus' => $status,
+            ]);
     }
 
     /**
@@ -95,7 +108,12 @@ class EnrollmentController extends Controller
         // $enrollment = Enrollment::find($id);
         // $input = $request->all();
         // $enrollment->update($input);
-        // return redirect('enrollments')->with('flash_message', 'Enrollment Updated!');  
+        // return redirect('enrollments')->with('flash_message', 'Enrollment Updated!'); 
+        
+        $enrollment = Enrollment::find($id);
+        if (!$enrollment) {
+            dd("Enrollment not found");
+        }
 
         $request->validate([
             'batch_id' => 'required|exists:batches,id',
@@ -121,7 +139,7 @@ class EnrollmentController extends Controller
         $enrollment = Enrollment::find($id);
         $input = $request->all();
         $enrollment->update($input);
-    
+
         return redirect('enrollments')->with('flash_message', 'Enrollment Updated!');
     }
 
