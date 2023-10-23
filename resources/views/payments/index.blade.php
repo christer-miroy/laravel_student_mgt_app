@@ -22,30 +22,37 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach($payments as $item)
-                    <tr>
-                        <td>{{ $item->id }}</td>
-                        <td>{{ $item->payment_date }}</td>
-                        <td>PHP {{ number_format($item->amount, 2, '.', ',') }}</td>
-                        <td>{{ $item->enrollment->enroll_no }}</td>
+                    @foreach($payments as $item)
+                            <tr>
+                                <td>{{ $item->id }}</td>
+                                <td>{{ $item->payment_date }}</td>
+                                <td>PHP {{ number_format($item->amount, 2, '.', ',') }}</td>
+                                <td>
+                                    @if ($item->enrollment)
+                                        {{ $item->enrollment->enroll_no }}
+                                    @else
+                                        No enrollments
+                                    @endif
+                                </td>
 
-                        <td>
-                            <a href="{{ url('/payments/' . $item->id) }}" title="View Payment"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
-                            <a href="{{ url('/payments/' . $item->id . '/edit') }}" title="Edit Payment"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
+                                <td>
+                                    <a href="{{ url('/payments/' . $item->id) }}" title="View Payment"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
+                                    <a href="{{ url('/payments/' . $item->id . '/edit') }}" title="Edit Payment"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
 
-                            <form method="POST" action="{{ url('/payments' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">
-                                {{ method_field('DELETE') }}
-                                {{ csrf_field() }}
-                                <button type="submit" class="btn btn-danger btn-sm" title="Delete Payment" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
-                            </form>
-                            <a href="{{ url('report/report1/' . $item->id) }}" title="Print Receipt">
-                                <button class="btn btn-primary btn-sm">
-                                    <i class="fa fa-print" aria-hidden="true"></i> Print Receipt
-                                </button>
-                            </a>
-                        </td>
-                    </tr>
-                @endforeach
+                                    <form method="POST" action="{{ url('/payments' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">
+                                        {{ method_field('DELETE') }}
+                                        {{ csrf_field() }}
+                                        <button type="submit" class="btn btn-danger btn-sm" title="Delete Payment" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                                    </form>
+                                    <a href="{{ url('report/report1/' . $item->id) }}" title="Print Receipt">
+                                        <button class="btn btn-primary btn-sm">
+                                            <i class="fa fa-print" aria-hidden="true"></i> Print Receipt
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                
                 </tbody>
             </table>
         </div>
