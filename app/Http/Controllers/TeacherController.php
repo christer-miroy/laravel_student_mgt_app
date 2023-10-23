@@ -79,11 +79,13 @@ class TeacherController extends Controller
             ],
         ]);
 
-        $teachers = Teacher::findOrFail($id);
+        $teacher = Teacher::findOrFail($id);
 
-        $teachers->mobile = $request->input('mobile');
-        $teachers->email = $request->input('email');
-        $teachers->save();
+        $teacher->name = $request->input('name');
+        $teacher->email = $request->input('address');
+        $teacher->mobile = $request->input('mobile');
+        $teacher->email = $request->input('email');
+        $teacher->save();
         return redirect('teachers')->with('flash_message', 'Teacher Updated!');   
     }
 

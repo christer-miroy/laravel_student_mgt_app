@@ -37,6 +37,31 @@ class EnrollmentController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // $input = $request->all();
+        // Enrollment::create($input);
+        // return redirect('enrollments')->with('flash_message', 'Enrollment Added!');
+        $request->validate([
+            'enroll_no' => 'required',
+            'batch_id' => 'required|exists:batches,id',
+            'student_id' => 'required|exists:students,id',
+            'join_date' => 'required|date',
+            'fee' => 'required|numeric',
+        ]);
+
+        // Check for duplicate enrollment
+        $existingEnrollment = Enrollment::where([
+            'batch_id' => $request->input('batch_id'),
+            'student_id' => $request->input('student_id'),
+            'join_date' => $request->input('join_date'),
+            'fee' => $request->input('fee'),
+        ])->first();
+
+        if ($existingEnrollment) {
+            return redirect('enrollments/create')
+                ->withInput($request->input())
+                ->withErrors(['duplicate' => 'Duplicate enrollment exists.']);
+        }
+
         $input = $request->all();
         Enrollment::create($input);
         return redirect('enrollments')->with('flash_message', 'Enrollment Added!');
@@ -67,10 +92,37 @@ class EnrollmentController extends Controller
      */
     public function update(Request $request, string $id): RedirectResponse
     {
+        // $enrollment = Enrollment::find($id);
+        // $input = $request->all();
+        // $enrollment->update($input);
+        // return redirect('enrollments')->with('flash_message', 'Enrollment Updated!');  
+
+        $request->validate([
+            'batch_id' => 'required|exists:batches,id',
+            'student_id' => 'required|exists:students,id',
+            'join_date' => 'required|date',
+            'fee' => 'required|numeric',
+        ]);
+    
+        // Check for duplicate enrollment excluding the current enrollment being updated
+        $existingEnrollment = Enrollment::where([
+            'batch_id' => $request->input('batch_id'),
+            'student_id' => $request->input('student_id'),
+            'join_date' => $request->input('join_date'),
+            'fee' => $request->input('fee'),
+        ])->where('id', '<>', $id)->first();
+    
+        if ($existingEnrollment) {
+            return redirect("enrollments/{$id}/edit")
+                ->withInput($request->input())
+                ->withErrors(['duplicate' => 'Duplicate enrollment exists.']);
+        }
+    
         $enrollment = Enrollment::find($id);
         $input = $request->all();
         $enrollment->update($input);
-        return redirect('enrollments')->with('flash_message', 'Enrollment Updated!');  
+    
+        return redirect('enrollments')->with('flash_message', 'Enrollment Updated!');
     }
 
     /**

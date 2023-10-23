@@ -33,6 +33,37 @@ class PaymentController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // $input = $request->all();
+        // Payment::create($input);
+        // return redirect('payments')->with('flash_message', 'Payment Added!');
+        $request->validate([
+            'payment_date' => 'required|date|after_or_equal:' . date('Y-m-d'),
+            'amount' => 'required|numeric|min:0.01',
+            'enrollment_id' => 'required|exists:enrollments,id',
+        ]);
+
+        // Check for duplicate payment
+        $existingPayment = Payment::where([
+            'payment_date' => $request->input('payment_date'),
+            'amount' => $request->input('amount'),
+            'enrollment_id' => $request->input('enrollment_id'),
+        ])->first();
+
+        if ($existingPayment) {
+            return redirect('payments/create')
+                ->withInput($request->input())
+                ->withErrors(['duplicate' => 'Duplicate payment exists.']);
+        }
+
+        // Check if payment amount is within the enrollment amount
+        $enrollment = Enrollment::find($request->input('enrollment_id'));
+
+        if ($enrollment && $request->input('amount') > $enrollment->amount) {
+            return redirect('payments/create')
+                ->withInput($request->input())
+                ->withErrors(['amount' => 'Payment amount should be equal to enrollment amount.']);
+        }
+
         $input = $request->all();
         Payment::create($input);
         return redirect('payments')->with('flash_message', 'Payment Added!');
@@ -62,10 +93,39 @@ class PaymentController extends Controller
      */
     public function update(Request $request, string $id): RedirectResponse
     {
+        $request->validate([
+            'payment_date' => 'required|date|after_or_equal:' . date('Y-m-d'),
+            'amount' => 'required|numeric|min:0.01',
+            'enrollment_id' => 'required|exists:enrollments,id',
+        ]);
+
+        // Check for duplicate payment excluding the current payment being updated
+        $existingPayment = Payment::where([
+            'payment_date' => $request->input('payment_date'),
+            'amount' => $request->input('amount'),
+            'enrollment_id' => $request->input('enrollment_id'),
+        ])->where('id', '<>', $id)->first();
+
+        if ($existingPayment) {
+            return redirect("payments/{$id}/edit")
+                ->withInput($request->input())
+                ->withErrors(['duplicate' => 'Duplicate payment exists.']);
+        }
+
+        // Check if payment amount is within the enrollment amount
+        $enrollment = Enrollment::find($request->input('enrollment_id'));
+
+        if ($enrollment && $request->input('amount') > $enrollment->amount) {
+            return redirect("payments/{$id}/edit")
+                ->withInput($request->input())
+                ->withErrors(['amount' => 'Payment amount cannot be greater than the enrollment amount.']);
+        }
+
         $payment = Payment::find($id);
         $input = $request->all();
         $payment->update($input);
-        return redirect('payments')->with('flash_message', 'Payment Updated!'); 
+
+        return redirect('payments')->with('flash_message', 'Payment Updated!');
     }
 
     /**

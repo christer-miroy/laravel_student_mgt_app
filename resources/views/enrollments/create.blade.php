@@ -30,6 +30,9 @@
           <label class="mt-2">Fee</label>
           <input type="text" name="fee" id="fee" class="form-control mt-2">
           <input type="submit" value="Save" class="btn btn-success mt-2">
+          @error('duplicate')
+            <div style="color: red;">{{ $message }}</div>
+          @enderror
       </form>
     </div>
 </div>

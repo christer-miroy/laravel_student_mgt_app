@@ -79,12 +79,16 @@ class StudentController extends Controller
                 Rule::unique('students')->ignore($id),
             ],
         ]);
-
+        
         $student = Student::findOrFail($id);
-
+        
+        $student->name = $request->input('name');
+        $student->address = $request->input('address');
         $student->mobile = $request->input('mobile');
         $student->email = $request->input('email');
+        
         $student->save();
+        
         return redirect('students')->with('flash_message', 'Student Updated!');  
     }
 

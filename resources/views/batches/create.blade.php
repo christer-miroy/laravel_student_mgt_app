@@ -20,6 +20,9 @@
           <label class="mt-2">Start Date</label>
           <input type="date" name="start_date" id="start_date" class="form-control mt-2" min="{{ date('Y-m-d') }}">
           <input type="submit" value="Save" class="btn btn-success mt-2">
+          @error('duplicate')
+            <div style="color: red;">{{ $message }}</div>
+          @enderror
       </form>
     </div>
 </div>

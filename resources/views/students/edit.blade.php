@@ -8,16 +8,17 @@
       <form action="{{ url('students/' .$students->id) }}" method="post">
         {!! csrf_field() !!}
         @method("PATCH")
-        <input type="hidden" name="id" id="id" value="{{$students->id}}" id="id" />
+        <input type="hidden" name="id" id="id" value="{{$students->id}}" />
         <label class="mt-2">Name</label>
         @error('name')
             <div style="color: red;">{{ $message }}</div>
-          @enderror
+        @enderror
         <input type="text" name="name" id="name" value="{{$students->name}}" class="form-control">
+
         <label class="mt-2">Address</label>
         @error('address')
             <div style="color: red;">{{ $message }}</div>
-          @enderror
+        @enderror
         <input type="text" name="address" id="address" value="{{$students->address}}" class="form-control">
         <label class="mt-2">Mobile (xxxx-xxx-xxxx)</label>
         <input type="tel" name="mobile" id="mobile" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" value="{{$students->mobile}}" class="form-control">

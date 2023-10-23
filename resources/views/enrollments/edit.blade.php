@@ -10,7 +10,7 @@
         @method("PATCH")
         <input type="hidden" name="id" id="id" value="{{$enrollments->id}}" id="id" />
         <label class="mt-2">Enrollment Number</label>
-        <input type="text" name="enroll_no" id="enroll_no" class="form-control mt-2" value="{{ $enrollments->enroll_no }}" disabled>
+        <input type="text" name="enroll_no" id="enroll_no" class="form-control mt-2" value="{{ $enrollments->enroll_no }}">
         <label class="mt-2">Batch</label>
         {{-- <input type="text" name="batch_id" id="batch_id" class="form-control mt-2" value="{{ $enrollments->batch_id }}"> --}}
         <select name="batch_id" id="batch_id" class="form-control mt-2" >
@@ -36,6 +36,9 @@
         <label class="mt-2">Fee</label>
         <input type="text" name="fee" id="fee" class="form-control mt-2" value="{{ $enrollments->fee }}">
         <input type="submit" value="Save" class="btn btn-success mt-2">
+        @error('duplicate')
+            <div style="color: red;">{{ $message }}</div>
+        @enderror
     </form>
    
   </div>

@@ -24,6 +24,9 @@
         <label class="mt-2">Start Date</label>
         <input type="date" name="start_date" id="start_date" value="{{$batches->start_date}}" class="form-control" min="{{ date('Y-m-d') }}">
         <input type="submit" value="Update" class="btn btn-success mt-2">
+        @error('duplicate')
+            <div style="color: red;">{{ $message }}</div>
+        @enderror
     </form>
    
   </div>

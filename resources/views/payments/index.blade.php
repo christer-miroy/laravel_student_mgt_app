@@ -46,7 +46,7 @@
                                     </form>
                                     <a href="{{ url('report/report1/' . $item->id) }}" title="Print Receipt">
                                         <button class="btn btn-primary btn-sm">
-                                            <i class="fa fa-print" aria-hidden="true"></i> Print Receipt
+                                            <i class="fa fa-print" aria-hidden="true"></i> See Receipt
                                         </button>
                                     </a>
                                 </td>

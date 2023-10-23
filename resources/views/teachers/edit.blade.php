@@ -8,8 +8,7 @@
       <form action="{{ url('teachers/' .$teachers->id) }}" method="post">
         {!! csrf_field() !!}
         @method("PATCH")
-        <input type="hidden" name="id" id="id" value="{{$teachers->id}}" id="id" />
-        <input type="hidden" name="id" id="id" value="{{$teachers->id}}" id="id" />
+        <input type="hidden" name="id" id="id" value="{{$teachers->id}}" />
         <label class="mt-2">Name</label>
         @error('name')
             <div style="color: red;">{{ $message }}</div>
@@ -36,4 +35,4 @@
   </div>
 </div>
  
-@stop
+@endsection

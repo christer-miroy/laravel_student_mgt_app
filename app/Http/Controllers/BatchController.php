@@ -35,6 +35,27 @@ class BatchController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // $input = $request->all();
+        // Batch::create($input);
+        // return redirect('batches')->with('flash_message', 'Batch Added!');
+        $request->validate([
+            'name' => 'required',
+            'course_id' => 'required|exists:courses,id',
+            'start_date' => 'required|date|after_or_equal:' . date('Y-m-d'),
+        ]);
+
+        // Check for duplicate batch
+        $existingBatch = Batch::where([
+            'name' => $request->input('name'),
+            'course_id' => $request->input('course_id'),
+        ])->first();
+
+        if ($existingBatch) {
+            return redirect('batches/create')
+                ->withInput($request->input())
+                ->withErrors(['duplicate' => 'Duplicate batch exists.']);
+        }
+
         $input = $request->all();
         Batch::create($input);
         return redirect('batches')->with('flash_message', 'Batch Added!');
@@ -64,10 +85,34 @@ class BatchController extends Controller
      */
     public function update(Request $request, string $id): RedirectResponse
     {
+        // $batch = Batch::find($id);
+        // $input = $request->all();
+        // $batch->update($input);
+        // return redirect('batches')->with('flash_message', 'Batch Updated!'); 
+
+        $request->validate([
+            'name' => 'required',
+            'course_id' => 'required|exists:courses,id',
+            'start_date' => 'required|date|after_or_equal:' . date('Y-m-d'),
+        ]);
+
+        // Check for duplicate batch excluding the current batch being updated
+        $existingBatch = Batch::where([
+            'name' => $request->input('name'),
+            'course_id' => $request->input('course_id'),
+        ])->where('id', '<>', $id)->first();
+
+        if ($existingBatch) {
+            return redirect("batches/{$id}/edit")
+                ->withInput($request->input())
+                ->withErrors(['duplicate' => 'Duplicate batch exists.']);
+        }
+
         $batch = Batch::find($id);
         $input = $request->all();
         $batch->update($input);
-        return redirect('batches')->with('flash_message', 'Batch Updated!'); 
+
+        return redirect('batches')->with('flash_message', 'Batch Updated!');
     }
 
     /**

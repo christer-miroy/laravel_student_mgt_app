@@ -20,6 +20,15 @@
           </select>
           
           <input type="submit" value="Save" class="btn btn-success mt-2">
+
+          @error('duplicate')
+            <div style="color: red;">{{ $message }}</div>
+          @enderror
+
+          @error('amount')
+              <div style="color: red;">{{ $message }}</div>
+          @enderror
+
       </form>
     </div>
 </div>
