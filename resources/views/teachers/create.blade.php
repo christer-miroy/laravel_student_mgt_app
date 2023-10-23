@@ -17,7 +17,7 @@
           @error('address')
             <div style="color: red;">{{ $message }}</div>
           @enderror
-          <label class="mt-2">Mobile</label>
+          <label class="mt-2">Mobile (xxxx-xxx-xxxx)</label>
           <input type="tel" name="mobile" id="mobile" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" class="form-control mt-2">
           @error('mobile')
             <div style="color: red;">{{ $message }}</div>
