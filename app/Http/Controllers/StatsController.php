@@ -10,7 +10,7 @@ use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class HomeController extends Controller
+class StatsController extends Controller
 {
     public function index(): View
     {
@@ -21,6 +21,6 @@ class HomeController extends Controller
         $enrollmentCount = Enrollment::count();
         $unpaidEnrollmentCount = Enrollment::where('status', 'unpaid')->count();
 
-        return view('home.index', compact('studentCount', 'teacherCount','courseCount', 'batchCount','enrollmentCount','unpaidEnrollmentCount'));
+        return view('stats.index', compact('studentCount', 'teacherCount','courseCount', 'batchCount','enrollmentCount','unpaidEnrollmentCount'));
     }
 }

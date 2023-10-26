@@ -4,7 +4,7 @@
     <div class="card-header">
         <h2>Student List</h2>
     </div>
-    <div class="card-body">
+    <div class="card-body">        
         <a href="{{ url('/students/create') }}" class="btn btn-success btn-sm mt-3" title="Add New Student">
             <i class="fa fa-plus" aria-hidden="true"></i> Add New
         </a>
@@ -46,7 +46,11 @@
                 </tbody>
             </table>
         </div>
-
+        <div class="mt-2">
+            {{ $students->links('pagination') }}
+            Displaying {{ $students->firstItem() }} to {{ $students->lastItem() }} of {{ $students->total() }} entries
+        </div>
     </div>
+    
 </div>
 @endsection

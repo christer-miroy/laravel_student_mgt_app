@@ -83,7 +83,7 @@
             <div class="col-md-3">
                 <!-- The sidebar -->
                 <div class="sidebar">
-                    <a class="active" href={{ url('/home') }}>Home</a>
+                    <a class="active" href={{ url('/stats') }}>Stats</a>
                     <a href="{{ url('/students') }}">Students</a>
                     <a href="{{ url('/teachers') }}">Teachers</a>
                     <a href="{{ url('/courses') }}">Courses</a>
